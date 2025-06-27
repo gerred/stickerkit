@@ -71,24 +71,24 @@ def create_usdz_from_image(image, output_path, scale=0.1, material_type="matte",
             width, height = image.size
             aspect_ratio = height / width
 
-            # Create geometry that faces camera for billboard mode
+            # Create geometry with correct Y-up orientation for AR
             if ar_behavior == "billboard":
-                # Billboard: always face camera
+                # Billboard: Y-up, faces camera (AR Quick Look compatible)
                 points = [
-                    (-scale, -scale * aspect_ratio, 0),
-                    (scale, -scale * aspect_ratio, 0),
-                    (scale, scale * aspect_ratio, 0),
-                    (-scale, scale * aspect_ratio, 0),
+                    (-scale, 0, -scale * aspect_ratio),  # Bottom-left
+                    (scale, 0, -scale * aspect_ratio),   # Bottom-right  
+                    (scale, 0, scale * aspect_ratio),    # Top-right
+                    (-scale, 0, scale * aspect_ratio),   # Top-left
                 ]
                 # Add billboard constraint
                 mesh_prim.SetMetadata("customData", {"billboard": True})
             else:
-                # Fixed: maintain orientation
+                # Fixed: maintain Y-up standard orientation
                 points = [
-                    (-scale, 0, -scale * aspect_ratio),
-                    (scale, 0, -scale * aspect_ratio),
-                    (scale, 0, scale * aspect_ratio),
-                    (-scale, 0, scale * aspect_ratio),
+                    (-scale, -scale * aspect_ratio, 0),  # Bottom-left
+                    (scale, -scale * aspect_ratio, 0),   # Bottom-right
+                    (scale, scale * aspect_ratio, 0),    # Top-right
+                    (-scale, scale * aspect_ratio, 0),   # Top-left
                 ]
 
             # Set mesh attributes
@@ -96,8 +96,13 @@ def create_usdz_from_image(image, output_path, scale=0.1, material_type="matte",
             mesh.CreateFaceVertexCountsAttr([4])  # Quad
             mesh.CreateFaceVertexIndicesAttr([0, 1, 2, 3])
             
-            # Normals for proper lighting
-            normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)]
+            # Normals for proper AR lighting (Y-up compatible)
+            if ar_behavior == "billboard":
+                # Billboard faces up (+Y normal)
+                normals = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)]
+            else:
+                # Fixed faces viewer (+Z normal)
+                normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)]
             mesh.CreateNormalsAttr(normals)
             mesh.SetNormalsInterpolation(UsdGeom.Tokens.vertex)
 

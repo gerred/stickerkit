@@ -5,7 +5,8 @@ AI-powered sticker generation toolkit using ComfyUI and FLUX.1 models on NVIDIA 
 ## Features
 
 - **FLUX.1-based sticker generation** with high-quality AI image synthesis
-- **AR sticker pipeline** with transparent background support
+- **AR sticker pipeline** with iOS USDZ export and universal fallbacks
+- **Transparent background removal** using SAM2 segmentation
 - **ControlNet integration** for precise control over generation
 - **Upscaling workflows** for high-resolution output
 - **Kubernetes deployment** ready for GPU clusters
@@ -69,6 +70,30 @@ make format
 # Run tests
 make test
 ```
+
+## AR Export
+
+The toolkit supports exporting stickers for AR viewing:
+
+### iOS AR QuickLook (USDZ)
+```bash
+# Test USDZ export functionality
+python test_usdz_direct.py
+
+# Demo complete AR pipeline
+python demo_ar_pipeline.py
+```
+
+### Export Formats
+- **USDZ**: Native iOS AR QuickLook support (requires USD library)
+- **PNG + OBJ**: Universal fallback for Android AR apps and 3D viewers
+
+### Usage in ComfyUI
+1. Generate sticker with `ARStickerGenerator`
+2. Export with `USDZExporter` node
+3. Get AR-ready files with viewing instructions
+
+See [AR_EXPORT_GUIDE.md](AR_EXPORT_GUIDE.md) for detailed usage instructions.
 
 ### Project Structure
 

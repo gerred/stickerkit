@@ -44,7 +44,6 @@ logs/
 !workflows/examples/*.jpeg
 
 # Custom nodes (exclude from git, managed by scripts)
-custom_nodes/
 !custom_nodes/.gitkeep
 
 # Environment and config
