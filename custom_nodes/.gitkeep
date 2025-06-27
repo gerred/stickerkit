@@ -1,0 +1,2 @@
+# This file ensures the custom_nodes directory is tracked in git
+# Custom nodes are installed by setup scripts and excluded from git
