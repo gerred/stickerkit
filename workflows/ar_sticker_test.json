@@ -1,0 +1,29 @@
+{
+  "1": {
+    "inputs": {
+      "prompt": "A cute cartoon sticker of a smiling cat with big eyes, vibrant colors, clean transparent background",
+      "negative_prompt": "background, blurry, low quality, watermark, text",
+      "width": 512,
+      "height": 512,
+      "steps": 20,
+      "cfg_scale": 7.5,
+      "seed": 42,
+      "model_type": "flux",
+      "export_format": "both"
+    },
+    "class_type": "ARStickerGenerator",
+    "_meta": {
+      "title": "AR Sticker Generator"
+    }
+  },
+  "2": {
+    "inputs": {
+      "filename_prefix": "ar_test_output",
+      "images": ["1", 0]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Generated Image"
+    }
+  }
+}

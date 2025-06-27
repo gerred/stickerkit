@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  comfyui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: comfyui:latest
+    container_name: comfyui
+    restart: unless-stopped
+    
+    # GPU configuration for H100
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    # Alternative GPU configuration (if deploy doesn't work)
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+    #   - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    
+    ports:
+      - "8188:8188"
+    
+    volumes:
+      # Models directory
+      - ./models:/app/ComfyUI/models
+      # Output directory
+      - ./output:/app/ComfyUI/output
+      # Input directory
+      - ./input:/app/ComfyUI/input
+      # Custom nodes
+      - ./custom_nodes:/app/ComfyUI/custom_nodes
+      # Optional: ComfyUI source for development
+      # - ./ComfyUI:/app/ComfyUI
+    
+    environment:
+      - CUDA_VISIBLE_DEVICES=all
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+      - CUDA_LAUNCH_BLOCKING=0
+    
+    # Increase shared memory size for better performance
+    shm_size: '2gb'
+    
+    # Optional: set memory limits
+    # mem_limit: 32g
+    # memswap_limit: 32g
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8188"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Optional: Add a model downloader service
+  model-downloader:
+    image: alpine/curl:latest
+    container_name: comfyui-models
+    profiles: ["models"]
+    volumes:
+      - ./models:/models
+    command: |
+      sh -c '
+        echo "Downloading common models..."
+        mkdir -p /models/checkpoints /models/vae /models/upscale_models
+        # Add your model download commands here
+        # curl -L -o /models/checkpoints/model.safetensors "YOUR_MODEL_URL"
+        echo "Model download complete"
+      '

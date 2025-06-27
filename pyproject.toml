@@ -1,0 +1,48 @@
+[project]
+name = "comfyui-hackathon"
+version = "0.1.0"
+description = "ComfyUI NVIDIA H100 Hackathon 2025 Setup"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "comfy-cli>=1.4.1",
+    "torch>=2.1.0",
+    "torchvision>=0.16.0",
+    "torchaudio>=2.1.0",
+    "requests>=2.31.0",
+    "pillow>=10.0.0",
+    "numpy>=1.24.0",
+    "scipy>=1.11.0",
+    "opencv-python>=4.8.0",
+    "transformers>=4.35.0",
+    "diffusers>=0.21.0",
+    "accelerate>=0.24.0",
+    "xformers>=0.0.22",
+    "safetensors>=0.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true

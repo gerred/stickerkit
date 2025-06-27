@@ -1,0 +1,73 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ComfyUI Server",
+            "type": "python",
+            "request": "launch",
+            "program": "ComfyUI/main.py",
+            "args": [
+                "--listen", "127.0.0.1",
+                "--port", "8188"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "python": "./.venv/bin/python",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/ComfyUI"
+            }
+        },
+        {
+            "name": "ComfyUI Server (CPU)",
+            "type": "python",
+            "request": "launch",
+            "program": "ComfyUI/main.py",
+            "args": [
+                "--cpu",
+                "--listen", "127.0.0.1",
+                "--port", "8188"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "python": "./.venv/bin/python",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/ComfyUI"
+            }
+        },
+        {
+            "name": "Debug Workflow",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/debug_workflow.py",
+            "args": [
+                "${input:workflowFile}"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "python": "./.venv/bin/python",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/ComfyUI"
+            }
+        },
+        {
+            "name": "Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "python": "./.venv/bin/python",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/ComfyUI"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "workflowFile",
+            "description": "Workflow file to debug",
+            "default": "workflows/examples/basic_flux.json",
+            "type": "promptString"
+        }
+    ]
+}

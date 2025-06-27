@@ -1,0 +1,28 @@
+# Core ComfyUI dependencies
+torch>=2.1.0
+torchvision>=0.16.0
+torchaudio>=2.1.0
+xformers>=0.0.22
+accelerate>=0.24.0
+transformers>=4.35.0
+diffusers>=0.23.0
+
+# Image processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Utilities
+requests>=2.31.0
+tqdm>=4.66.0
+psutil>=5.9.0
+safetensors>=0.4.0
+omegaconf>=2.3.0
+einops>=0.7.0
+kornia>=0.7.0
+spandrel>=0.1.6
+
+# Optional but recommended
+matplotlib>=3.7.0
+imageio>=2.31.0

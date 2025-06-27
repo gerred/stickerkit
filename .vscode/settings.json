@@ -1,0 +1,62 @@
+{
+    "python.defaultInterpreterPath": "./.venv/bin/python",
+    "python.analysis.extraPaths": [
+        "./ComfyUI",
+        "./ComfyUI/custom_nodes"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--max-line-length=88",
+        "--ignore=E203,W503"
+    ],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=88"
+    ],
+    "python.sortImports.args": [
+        "--profile=black"
+    ],
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "files.associations": {
+        "*.json": "json",
+        "*.yaml": "yaml",
+        "*.yml": "yaml"
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/models": true,
+        "**/output": true,
+        "**/temp": true,
+        "**/.venv": true
+    },
+    "search.exclude": {
+        "**/models": true,
+        "**/output": true,
+        "**/temp": true,
+        "**/.venv": true,
+        "**/logs": true
+    },
+    "jupyter.defaultKernel": "hackathon",
+    "kubernetes.defaultNamespace": "comfyui-hackathon",
+    "git.ignoreLimitWarning": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#1e1e1e",
+        "statusBar.background": "#007acc",
+        "statusBar.foreground": "#ffffff"
+    },
+    "emmet.includeLanguages": {
+        "json": "json"
+    }
+}

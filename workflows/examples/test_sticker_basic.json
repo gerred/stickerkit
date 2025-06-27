@@ -1,0 +1,32 @@
+{
+  "1": {
+    "inputs": {
+      "prompt": "cute cartoon cat sticker, clean white background, vibrant colors",
+      "sticker_style": "cartoon",
+      "background_style": "clean_white",
+      "negative_prompt": "blurry, low quality, photorealistic, realistic photo, human photo, messy background, cluttered, dark, muddy colors",
+      "width": 1024,
+      "height": 1024,
+      "num_inference_steps": 4,
+      "guidance_scale": 0.0,
+      "seed": 12345
+    },
+    "class_type": "ARStickerGenerator",
+    "_meta": {
+      "title": "AR Sticker Generator Test"
+    }
+  },
+  "2": {
+    "inputs": {
+      "filename_prefix": "sticker_test",
+      "images": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Sticker"
+    }
+  }
+}

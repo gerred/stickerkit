@@ -1,0 +1,73 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: comfyui-network-policy
+  namespace: comfyui
+spec:
+  podSelector:
+    matchLabels:
+      app: comfyui
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 8188
+  egress:
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+  - to:
+    - podSelector:
+        matchLabels:
+          app: comfyui
+    ports:
+    - protocol: TCP
+      port: 8188
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: comfyui-infiniband-policy
+  namespace: comfyui
+spec:
+  podSelector:
+    matchLabels:
+      app: comfyui
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: comfyui
+    ports:
+    - protocol: TCP
+      port: 4390-4400
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: comfyui
+    ports:
+    - protocol: TCP
+      port: 4390-4400

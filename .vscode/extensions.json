@@ -1,0 +1,20 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.flake8",
+        "ms-python.black-formatter",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-python.isort",
+        "ms-toolsai.jupyter",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "charliermarsh.ruff",
+        "ms-vscode.hexeditor",
+        "ms-vscode-remote.remote-containers"
+    ],
+    "unwantedRecommendations": [
+        "ms-python.pylint"
+    ]
+}

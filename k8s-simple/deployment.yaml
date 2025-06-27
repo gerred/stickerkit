@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comfyui
+  namespace: comfyui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comfyui
+  template:
+    metadata:
+      labels:
+        app: comfyui
+    spec:
+      containers:
+      - name: comfyui
+        image: stax124/comfyui:latest
+        ports:
+        - containerPort: 8188
+        env:
+        - name: CLI_ARGS
+          value: "--listen 0.0.0.0 --port 8188 --enable-cors-header"
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "all"
+        - name: CUDA_VISIBLE_DEVICES
+          value: "0,1,2,3,4,5,6,7"
+        resources:
+          requests:
+            nvidia.com/gpu: 8
+            nvidia.com/hostdev: 8
+            memory: "32Gi"
+            cpu: "8"
+          limits:
+            nvidia.com/gpu: 8
+            nvidia.com/hostdev: 8
+            memory: "64Gi"
+            cpu: "16"
+        volumeMounts:
+        - name: dev-shm
+          mountPath: /dev/shm
+      volumes:
+      - name: dev-shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 32Gi
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule

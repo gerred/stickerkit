@@ -1,0 +1,111 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ComfyUI Hackathon Specific
+ComfyUI/
+models/
+output/
+temp/
+logs/
+*.safetensors
+*.ckpt
+*.pth
+*.bin
+*.onnx
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.gif
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.tiff
+*.bmp
+
+# Exclude example images
+!workflows/examples/*.png
+!workflows/examples/*.jpg
+!workflows/examples/*.jpeg
+
+# Custom nodes (exclude from git, managed by scripts)
+custom_nodes/
+!custom_nodes/.gitkeep
+
+# Environment and config
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor backups
+*~
+*.swp
+*.swo
+*.tmp
+
+# Kubernetes secrets
+kubeconfig
+*.kubeconfig
+
+# Credentials
+credentials.json
+service-account.json
+*.pem
+*.key
+*.crt
+
+# Development databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Development artifacts
+*.tar.gz
+*.zip
+uv.lock
+poetry.lock
+Pipfile.lock
+
+# Implementation and planning docs (keep source clean)
+*IMPLEMENTATION*.md
+*VALIDATION*.md
+*SUBMISSION*.md
+*FINAL*.md
+debug_workflow.py
+test_*.py
+ssh-pod.yaml
+
+# Submodules that aren't properly initialized
+realtime_ascii_diffusion/

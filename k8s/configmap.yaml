@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: comfyui-config
+  namespace: comfyui
+data:
+  extra_model_paths.yaml: |
+    base_path: /app/ComfyUI/
+    checkpoints: /app/models/checkpoints/
+    vae: /app/models/vae/
+    loras: /app/models/loras/
+    upscale_models: /app/models/upscale_models/
+    embeddings: /app/models/embeddings/
+    hypernetworks: /app/models/hypernetworks/
+    controlnet: /app/models/controlnet/
+    clip_vision: /app/models/clip_vision/
+    style_models: /app/models/style_models/
+    diffusers: /app/models/diffusers/
+    unet: /app/models/unet/
+    clip: /app/models/clip/
+    gligen: /app/models/gligen/
+    photomaker: /app/models/photomaker/
+    
+  config.yaml: |
+    listen: "0.0.0.0"
+    port: 8188
+    enable-cors-header: true
+    max-upload-size: 1000
+    temp-dir: /tmp/comfyui
+    output-dir: /app/output
+    
+  nvidia-settings.sh: |
+    #!/bin/bash
+    export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+    export NVIDIA_VISIBLE_DEVICES=all
+    export CUDA_DEVICE_ORDER=PCI_BUS_ID
+    export NCCL_IB_DISABLE=0
+    export NCCL_NET_GDR_LEVEL=2
+    export NCCL_IB_GID_INDEX=3
+    export NCCL_IB_SL=1
+    export NCCL_CHECK_DISABLE=1
+    export NCCL_P2P_DISABLE=0
+    export NCCL_TREE_THRESHOLD=0
+    nvidia-smi
+    nvidia-ml-py

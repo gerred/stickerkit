@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: comfyui
+
+resources:
+- namespace.yaml
+- configmap.yaml
+- deployment.yaml
+- service.yaml
+- resource-quota.yaml
+- hpa.yaml
+- nvidia-device-plugin.yaml
+- network-policy.yaml
+- monitoring.yaml
+
+labels:
+- includeSelectors: true
+  pairs:
+    app.kubernetes.io/name: comfyui
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: inference
+    app.kubernetes.io/part-of: ai-platform
+
+images:
+- name: comfyanonymous/comfyui
+  newTag: latest
+
+replicas:
+- name: comfyui
+  count: 1
+
+patches:
+- patch: |-
+    - op: add
+      path: /spec/template/metadata/annotations
+      value:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8188"
+        prometheus.io/path: "/metrics"
+  target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: comfyui

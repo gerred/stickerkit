@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comfyui
+  namespace: comfyui
+  labels:
+    app: comfyui
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: comfyui
+  template:
+    metadata:
+      labels:
+        app: comfyui
+        gpu.nvidia.com/accelerator: h100
+    spec:
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+
+      containers:
+      - name: comfyui
+        image: yanwk/comfyui-boot:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8188
+          name: web
+          protocol: TCP
+        env:
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "all"
+        - name: CUDA_VISIBLE_DEVICES
+          value: "0,1,2,3,4,5,6,7"
+        - name: NCCL_IB_DISABLE
+          value: "0"
+        - name: NCCL_NET_GDR_LEVEL
+          value: "2"
+        - name: NCCL_IB_GID_INDEX
+          value: "3"
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        - name: CLI_ARGS
+          value: "--listen 0.0.0.0 --port 8188 --enable-cors-header"
+        resources:
+          requests:
+            memory: "64Gi"
+            cpu: "16"
+            nvidia.com/gpu: 8
+            nvidia.com/hostdev: 8
+          limits:
+            memory: "128Gi"
+            cpu: "32"
+            nvidia.com/gpu: 8
+            nvidia.com/hostdev: 8
+        volumeMounts:
+        - name: config
+          mountPath: /app/extra_model_paths.yaml
+          subPath: extra_model_paths.yaml
+        - name: config
+          mountPath: /etc/nvidia-settings/nvidia-settings.sh
+          subPath: nvidia-settings.sh
+        - name: nvidia-driver
+          mountPath: /usr/local/nvidia
+          readOnly: true
+        - name: dev-shm
+          mountPath: /dev/shm
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            add:
+            - IPC_LOCK
+            - SYS_RESOURCE
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8188
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8188
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+      volumes:
+      - name: config
+        configMap:
+          name: comfyui-config
+          defaultMode: 0755
+      - name: nvidia-driver
+        hostPath:
+          path: /usr/local/nvidia
+      - name: dev-shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 32Gi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
